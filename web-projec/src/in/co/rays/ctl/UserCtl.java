@@ -14,12 +14,26 @@ import javax.servlet.http.HttpServletResponse;
 import in.co.rays.bean.UserBean;
 import in.co.rays.model.UserModel;
 
-@WebServlet("/UserRegistrationCtl")
-public class UserRegistrationCtl extends HttpServlet {
+@WebServlet("/UserCtl")
+public class UserCtl extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		resp.sendRedirect("UserRegistrationView.jsp");
+
+		String id = req.getParameter("id");
+
+		UserModel model = new UserModel();
+
+		if (id != null) {
+			try {
+				UserBean bean = model.findByPk(Integer.parseInt(id));
+				req.setAttribute("bean", bean);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		RequestDispatcher rd = req.getRequestDispatcher("UserView.jsp");
+		rd.forward(req, resp);
 	}
 
 	@Override
@@ -47,16 +61,36 @@ public class UserRegistrationCtl extends HttpServlet {
 		bean.setAddress(address);
 
 		UserModel model = new UserModel();
-
-		try {
-			model.add(bean);
-			req.setAttribute("success", "User added successfully..!!");
-		} catch (Exception e) {
-			e.printStackTrace();
-			req.setAttribute("error", "Login Id already exist..!!");
+		String op = req.getParameter("operation");
+		if(op.equalsIgnoreCase("save")) {
+			try {
+				model.add(bean);
+				req.setAttribute("bean", bean);
+				req.setAttribute("success", "User added successfully..!!");
+			} catch (Exception e) {
+				e.printStackTrace();
+				req.setAttribute("bean", bean);
+				req.setAttribute("error", "Login Id already exist..!!");
+			}
+			
+	
+		}else if(op.equalsIgnoreCase("update")) {
+			bean.setId(Integer.parseInt(req.getParameter("id")));
+			try {
+				model.update(bean);
+				bean = model.findByPk(bean.getId());
+				req.setAttribute("bean", bean);
+				req.setAttribute("success", "User updated successfully..!!");
+			} catch (Exception e) {
+				e.printStackTrace();
+				req.setAttribute("bean", bean);
+				req.setAttribute("error", "User Id already exist..!!");
+			}
+			
 		}
 
-		RequestDispatcher rd = req.getRequestDispatcher("UserRegistrationView.jsp");
+		
+		RequestDispatcher rd = req.getRequestDispatcher("UserView.jsp");
 		rd.forward(req, resp);
 	}
 }

@@ -1,6 +1,7 @@
 package in.co.rays.ctl;
 
 import java.io.IOException;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,12 +18,15 @@ public class LoginCtl extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
 		String op = req.getParameter("operation");
-		if(op!=null && op.equalsIgnoreCase("logout") ) {
+
+		if (op != null && op.equalsIgnoreCase("Logout")) {
 			HttpSession session = req.getSession();
 			session.invalidate();
-			req.setAttribute("success", "Logout successfully ");
+			req.setAttribute("success", "Logout Successfully..!!");
 		}
+
 		RequestDispatcher rd = req.getRequestDispatcher("LoginView.jsp");
 		rd.forward(req, resp);
 	}
@@ -33,27 +37,27 @@ public class LoginCtl extends HttpServlet {
 		String loginId = req.getParameter("loginId");
 		String password = req.getParameter("password");
 		String op = req.getParameter("operation");
-		UserModel model = new UserModel();
 
 		if (op.equalsIgnoreCase("signIn")) {
-			System.out.println("login Id: " + loginId);
-			System.out.println("password: " + password);
+			UserModel model = new UserModel();
+
 			try {
 				UserBean bean = model.authenticate(loginId, password);
+
 				if (bean != null) {
+
 					HttpSession session = req.getSession();
+
 					session.setAttribute("user", bean);
-					RequestDispatcher rd = req.getRequestDispatcher("Welcome.jsp");
-					rd.forward(req, resp);
+
+					resp.sendRedirect("WelcomeCtl");
+
 				} else {
-					req.setAttribute("error", "login id does not Exist");
+					req.setAttribute("error", "Login & Password Invalid");
 					RequestDispatcher rd = req.getRequestDispatcher("LoginView.jsp");
 					rd.forward(req, resp);
-
 				}
-
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 

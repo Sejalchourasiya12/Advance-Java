@@ -9,25 +9,31 @@
 <body>
 	<%@ include file="Header.jsp"%>
 	<%
+		String success = (String) request.getAttribute("success");
 		String error = (String) request.getAttribute("error");
-	String success = (String) request.getAttribute("success");
 	%>
 	<div align="center">
 		<h1>Login</h1>
 		<%
-			if (error != null && error.length() > 0) {
+			if (success != null) {
 		%>
-		<font color="Red"><h3><%=error%></h3></font>
+		<h3>
+			<font color="green"><%=success%></font>
+		</h3>
+
 		<%
 			}
 		%>
 		<%
-					if (error != null && error.length() > 0) {
-				%>
-		<font color="Red"><h3><%=error%></h3></font>
+			if (error != null) {
+		%>
+		<h3>
+			<font color="red"><%=error%></font>
+		</h3>
+
 		<%
-					}
-				%>
+			}
+		%>
 		<form action="LoginCtl" method="post">
 			<table>
 				<tr>
@@ -46,6 +52,5 @@
 			</table>
 		</form>
 	</div>
-
 </body>
 </html>

@@ -7,76 +7,66 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<%@include file= "Header.jsp" %>
+	<%@ include file="Header.jsp"%>
+
 	<%
-		String error = (String) request.getAttribute("error");
 		String success = (String) request.getAttribute("success");
+		String error = (String) request.getAttribute("error");
 	%>
 	<div align="center">
+		<h1>User Registration</h1>
+		<%
+			if (success != null) {
+		%>
+		<h3>
+			<font color="green"><%=success%></font>
+		</h3>
 
+		<%
+			}
+		%>
+		<%
+			if (error != null) {
+		%>
+		<h3>
+			<font color="red"><%=error%></font>
+		</h3>
+
+		<%
+			}
+		%>
 		<form action="UserRegistrationCtl" method="post">
-			<h1>User Registration</h1>
-			<div>
-				<%
-					if (success != null && success.length() > 0) {
-				%>
-				<font color="Green"><h3><%=success%></h3></font>
-				<%
-					}
-				%>
-				<%
-					if (error != null && error.length() > 0) {
-				%>
-				<font color="Red"><h3><%=error%></h3></font>
-				<%
-					}
-				%>
-			</div>
-
-
 			<table>
 				<tr>
-					<th>First Name :</th>
+					<th>First Name:</th>
 					<td><input type="text" name="firstName"></td>
 				</tr>
-
 				<tr>
-					<th>Last Name :</th>
+					<th>Last Name:</th>
 					<td><input type="text" name="lastName"></td>
 				</tr>
-
 				<tr>
-					<th>Login Id :</th>
+					<th>Login ID:</th>
 					<td><input type="text" name="loginId"></td>
 				</tr>
-
-
 				<tr>
-					<th>Password :</th>
+					<th>Password:</th>
 					<td><input type="text" name="password"></td>
 				</tr>
-
-
-
 				<tr>
-					<th>DOB :</th>
-					<td><input type="Date" name="dob" style="width: 96%"></td>
+					<th>DOB:</th>
+					<td><input type="date" name="dob" style="width: 98%"></td>
 				</tr>
-
-
 				<tr>
 					<th>Address:</th>
 					<td><input type="text" name="address"></td>
 				</tr>
-
 				<tr>
+					<th></th>
 					<td><input type="submit" value="signUp"></td>
+				</tr>
 			</table>
-
-
 		</form>
 	</div>
-
-
 </body>
 </html>
